@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ebb8000335bb74481a6c160f5f45f6, type: 3}
+  m_Name: Tempest Strike
+  m_EditorClassIdentifier: 
+  itemName: 
+  icon: {fileID: 0}
+  itemID: 0
+  weight: 0
+  Model: {fileID: 0}
+  isPassive: 0
+  isFirstAttack: 0
+  isTargeted: 0
+  manaCost: 0
+  cooldown: 5
+  range: 0
+  duration: 2
+  visualEffect: {fileID: 4246489755323382288, guid: e7dfa4c067c12f9498e1a5e53c043b6e, type: 3}
+  impactEffect: {fileID: 0}
+  nextCastTime: 99.260635
+  passiveDescription: 
+  activeDescription: 
+  slowAmount: 30
+  damagePerSecond: 10
+  effectDuration: 5
+  effectRadius: 2
+  vortexEffect: {fileID: 4246489755323382288, guid: e7dfa4c067c12f9498e1a5e53c043b6e, type: 3}
+  tempestSound: {fileID: 0}
+  growSpeed: 10

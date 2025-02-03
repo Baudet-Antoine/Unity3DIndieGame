@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bab79caca21b474dabb510a36f25b11, type: 3}
+  m_Name: BlueStaff
+  m_EditorClassIdentifier: 
+  itemName: Blue Staff
+  icon: {fileID: 692894900139745525, guid: 713411d4e6a1f6540895a4c49beb892d, type: 3}
+  itemID: 0
+  weight: 0
+  Model: {fileID: 1506325932424522276, guid: 393f558549903b544a36820350d6bf1f, type: 3}
+  ModelGround: {fileID: 7286064248652318309, guid: 5292230c097a8174287406f653cef80b, type: 3}
+  isMelee: 0
+  isSlowing: 1
+  isBurning: 0
+  isPoisoning: 0
+  isVamping: 0
+  EffectAmount: 100
+  range: 10
+  Damage: 15
+  fireRate: 1
+  projectileSpeed: 21
+  projectilePrefab: {fileID: 2529248820589399205, guid: e166b1499115e6c499d3f81b33813997, type: 3}
+  projectileSpawnPoint: {fileID: 0}
+  nextFireTime: 25.348629

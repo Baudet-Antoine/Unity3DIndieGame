@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e5843099ce31ac4c8b05b3ccd96d589, type: 3}
+  m_Name: M13
+  m_EditorClassIdentifier: 
+  itemName: M13
+  icon: {fileID: 692894900139745525, guid: fe99822c10709464fa9f9e94313b555a, type: 3}
+  itemID: 2
+  weight: 0
+  Model: {fileID: 2734503543119637145, guid: 84762dcb51cbfd04782b5c338f248c35, type: 3}
+  ModelGround: {fileID: 7286064248652318309, guid: 57497e0cc7fbe7347b0862af5eca17ca, type: 3}
+  isMelee: 0
+  isSlowing: 0
+  isBurning: 0
+  isPoisoning: 0
+  isVamping: 0
+  EffectAmount: 0
+  range: 15
+  Damage: 10
+  fireRate: 1
+  projectileSpeed: 50
+  projectilePrefab: {fileID: 2529248820589399205, guid: faaf0ead65d16a04596a79c5452db3a9, type: 3}
+  projectileSpawnPoint: {fileID: 0}
+  nextFireTime: 30.728468
+  burstCount: 3
+  burstInterval: 0.1

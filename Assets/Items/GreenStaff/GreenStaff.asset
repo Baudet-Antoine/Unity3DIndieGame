@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bab79caca21b474dabb510a36f25b11, type: 3}
+  m_Name: GreenStaff
+  m_EditorClassIdentifier: 
+  itemName: Green Staff
+  icon: {fileID: 692894900139745525, guid: 1746f16a1a2edb749b27fe3ca3b3fcc9, type: 3}
+  itemID: 5
+  weight: 0
+  Model: {fileID: 1506325932424522276, guid: 1edd54ff50fab904a99fc4b90ddd5b98, type: 3}
+  ModelGround: {fileID: 7286064248652318309, guid: 033f7605fca165641b49ce4a97afec56, type: 3}
+  isMelee: 0
+  isSlowing: 0
+  isBurning: 0
+  isPoisoning: 0
+  isVamping: 1
+  EffectAmount: 0
+  range: 10
+  Damage: 15
+  fireRate: 1
+  projectileSpeed: 21
+  projectilePrefab: {fileID: 2529248820589399205, guid: 0203dd62b96d8fd4d843f2180e85a8a6, type: 3}
+  projectileSpawnPoint: {fileID: 0}
+  nextFireTime: 51.06408

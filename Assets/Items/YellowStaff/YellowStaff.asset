@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6437f238c8bf489d740712ed28e0f, type: 3}
+  m_Name: YellowStaff
+  m_EditorClassIdentifier: 
+  itemName: Yellow Staff
+  icon: {fileID: 692894900139745525, guid: 4a98dad64baafae45a141ed13d07b1a3, type: 3}
+  itemID: 3
+  weight: 0
+  Model: {fileID: 1506325932424522276, guid: f267ee95833f0bd4b81e7a8f1a40d7b4, type: 3}
+  ModelGround: {fileID: 7286064248652318309, guid: 42a8ce60fb2a1a14e9f1060ee81912ff, type: 3}
+  isMelee: 0
+  isSlowing: 0
+  isBurning: 0
+  isPoisoning: 0
+  isVamping: 0
+  EffectAmount: 0
+  range: 10
+  Damage: 15
+  fireRate: 1
+  projectileSpeed: 21
+  projectilePrefab: {fileID: 2529248820589399205, guid: 3ea06c96fe74fc6429231e131c5bc041, type: 3}
+  projectileSpawnPoint: {fileID: 0}
+  nextFireTime: 0
