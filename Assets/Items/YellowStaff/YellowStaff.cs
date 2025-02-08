@@ -39,8 +39,8 @@ public class YellowStaff : Weapon
     {
         for (int i = 0; i < ennemies.Count - 1; i++)
         {
-            Vector3 startPosition = ennemies[i].transform.position;
-            Vector3 endPosition = ennemies[i + 1].transform.position;
+            Vector3 startPosition = new Vector3(ennemies[i].transform.position.x,0,ennemies[i].transform.position.z);
+            Vector3 endPosition = new Vector3(ennemies[i+1].transform.position.x,0,ennemies[i+1].transform.position.z);
             Vector3 midPoint = (startPosition + endPosition) / 2;
             float distance = Vector3.Distance(startPosition, endPosition);
             Quaternion rotation = Quaternion.LookRotation(endPosition - startPosition);
@@ -56,7 +56,7 @@ public class YellowStaff : Weapon
 
             if (i > 0 && ennemies[i])
             {
-                ennemies[i].GetComponent<EnemyController>().TakeDamage(
+                ennemies[i].transform.GetChild(0).GetComponent<EnemyController>().TakeDamage(
                     totalDamage - (totalDamage * (float)Mathf.Pow(0.2f, i)),
                     Color.yellow
                 );

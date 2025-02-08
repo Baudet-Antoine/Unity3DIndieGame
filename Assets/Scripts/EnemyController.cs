@@ -6,29 +6,25 @@ using System.Collections.Generic;
 
 public class EnemyController : MonoBehaviour
 {
-
     public bool IsDead { get; private set; } = false;
     public bool isBurning = false;
     public bool isPoisoning = false;
     public bool isSlowing = false;
-    public int Attack = 15;
     public float maxHealth = 100;
     public float currentHealth;
     private float accumulatedDamage = 0f; // Dégâts accumulés
     private float lastDamageDisplayTime = 0f;
     public int[] DropsItemsID;
     public int DropRate;
-    public int textureSampleRate = 4;
+    public int AttackDamage = 10;
+    private int textureSampleRate = 4;
     public int PoisonAmount = 0;
     public int BurnAmount = 0;
     public int SlowAmount = 0;
 
     public float speed = 3f;
     public float BaseSpeed = 3f;
-    public float attackInterval = 1f;
-    public float stopDistance = 5f;
     public float AggroRange = 35f;
-    public float distanceToPlayer;
     public float BurnTime = 0.0f;
     public float PoisonTime = 0.0f;
     public float SlowTime = 0.0f;
@@ -43,17 +39,12 @@ public class EnemyController : MonoBehaviour
     public GameObject CoinPrefab;
     public GameObject Item;
     public GameObject IceStunPrefab;
-    public GameObject target;
+    public GameObject HPBar;
 
     private Renderer enemyRenderer;
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
     
     private Color[] enemyColors;
-    
-    private bool isAttacking = false;
-    private Coroutine attackCoroutine;
-
-    public Animator animator;
     
     public Action OnProjectileDestroyed;
 
@@ -61,7 +52,7 @@ public class EnemyController : MonoBehaviour
     {
         currentHealth = maxHealth;
         enemyRenderer = Model.GetComponent<Renderer>();
-        navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // Récupère le NavMeshAgent
+        navMeshAgent = gameObject.transform.parent.GetComponent<UnityEngine.AI.NavMeshAgent>(); // Récupère le NavMeshAgent
         if (enemyRenderer != null)
         {
             enemyColors = GetUsedColorsFromTextureByUV(enemyRenderer);
@@ -70,7 +61,6 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        MoveTowardsPlayer();
 
         if(BurnTime > 0.0f && isBurning == false)
         {
@@ -93,7 +83,8 @@ public class EnemyController : MonoBehaviour
     {
         ApplySlow(Amount);
         float duration = (SlowAmount == 100) ? SlowTime/2 : SlowTime;
-        GameObject Ice = Instantiate(IceStunPrefab, this.transform.position, Quaternion.identity);
+        GameObject Ice = Instantiate(IceStunPrefab, this.transform.position, Quaternion.identity, this.transform);
+        Ice.transform.localScale *= 2; // Increase the size of the IceStunPrefab
         yield return new WaitForSeconds(duration);
         SlowTime = 0;
         SpeedReset();
@@ -123,7 +114,7 @@ public class EnemyController : MonoBehaviour
     }
 
     
-    GameObject FindClosestPlayer()
+    public GameObject FindClosestPlayer()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         GameObject closestPlayer = null;
@@ -146,71 +137,6 @@ public class EnemyController : MonoBehaviour
         else
         {
             return null;
-        }
-    }
-
-    void MoveTowardsPlayer()
-    {
-
-        target = FindClosestPlayer();
-
-        if (target != null)
-        {
-            distanceToPlayer = Vector3.Distance(transform.position, target.transform.position);
-            // Si le joueur est à portée d'attaque
-            if (distanceToPlayer <= stopDistance)
-            {
-                animator.SetBool("isRunning", false);
-                navMeshAgent.isStopped = true;
-                // Commencer l'attaque si ce n'est pas déjà fait
-                if (!isAttacking)
-                {
-                    StartAttack();
-                }
-
-                // Rotation de l'ennemi pour faire face au joueur
-                Vector3 direction = (target.transform.position - transform.position).normalized;
-                Quaternion lookRotation = Quaternion.Slerp(Model.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 5f);
-                Model.transform.rotation = lookRotation;
-            }
-            else // Si le joueur est trop loin
-            {
-                animator.SetBool("isRunning", true);
-                // Configurer la destination du NavMeshAgent
-                navMeshAgent.isStopped = false;
-                navMeshAgent.SetDestination(target.transform.position);
-                navMeshAgent.speed = speed;
-
-                // Arrêter l'attaque si le joueur est trop éloigné
-                if (isAttacking)
-                {
-                    StopAttack();
-                }
-
-                // Rotation de l'ennemi pour faire face au joueur tout en se déplaçant
-                Vector3 direction = (target.transform.position - transform.position).normalized;
-                Quaternion lookRotation = Quaternion.Slerp(Model.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 5f);
-                Model.transform.rotation = lookRotation;
-            }
-        }
-        else
-        {
-            animator.SetBool("isRunning", false);
-            navMeshAgent.isStopped = true;
-        }
-    }
-
-
-    void StartAttack()
-    {
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            if (attackCoroutine != null)
-            {
-                StopCoroutine(attackCoroutine);
-            }
-            attackCoroutine = StartCoroutine(AttackPlayer());
         }
     }
 
@@ -237,13 +163,8 @@ public class EnemyController : MonoBehaviour
     private void DisplayDamage(float damage,Color color)
     {
         float objectHeight = 0f;
-        Collider objectCollider = GetComponent<Collider>();
-        if (objectCollider != null)
-        {
-            objectHeight = objectCollider.bounds.size.y;
-        }
 
-        Vector3 damageVector = new Vector3(transform.position.x, transform.position.y + objectHeight, transform.position.z);
+        Vector3 damageVector = new Vector3(HPBar.transform.position.x, HPBar.transform.position.y + 1.5f, HPBar.transform.position.z);
         var damageText = Instantiate(DamageText, damageVector, Quaternion.identity);
         damageText.GetComponent<TextMeshPro>().text = "-" + Mathf.FloorToInt(damage).ToString();
         damageText.GetComponent<TextMeshPro>().color = color;
@@ -263,7 +184,7 @@ public class EnemyController : MonoBehaviour
 
     public void DieNoDrop()
     {
-        GameObject effect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(explosionEffect, new Vector3(transform.position.x,0,transform.position.z), Quaternion.identity);
         ParticleSystem ps = effect.GetComponent<ParticleSystem>();
 
         if (ps != null && enemyColors.Length > 0)
@@ -278,13 +199,13 @@ public class EnemyController : MonoBehaviour
         }
 
         Destroy(effect, 3f);
-        Destroy(gameObject);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 
     public void Die()
     {
         IsDead = true;
-        GameObject effect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(explosionEffect, new Vector3(transform.position.x,0,transform.position.z), Quaternion.identity);
         ParticleSystem ps = effect.GetComponent<ParticleSystem>();
 
         if (ps != null && enemyColors.Length > 0)
@@ -307,14 +228,14 @@ public class EnemyController : MonoBehaviour
         }
 
         Destroy(effect, 3f);
-        Destroy(gameObject);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 
     void DropItem(int ID)
     {
         Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(0f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f));
         
-        GameObject item = Instantiate(GameManager.Instance.GetItemByID(ID).ModelGround, transform.position + randomOffset, Quaternion.identity);
+        GameObject item = Instantiate(GameManager.Instance.GetItemByID(ID).ModelGround, new Vector3(transform.position.x,0,transform.position.z) + randomOffset, Quaternion.identity);
 
         Rigidbody rb = item.GetComponent<Rigidbody>();
 
@@ -348,7 +269,7 @@ public class EnemyController : MonoBehaviour
         {
             Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(0f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f));
 
-            GameObject xpObject = Instantiate(XpPrefab, transform.position + randomOffset, Quaternion.identity);
+            GameObject xpObject = Instantiate(XpPrefab, new Vector3(transform.position.x,0,transform.position.z) + randomOffset, Quaternion.identity);
 
             Rigidbody rb = xpObject.GetComponent<Rigidbody>();
 
@@ -386,7 +307,7 @@ public class EnemyController : MonoBehaviour
         {
             Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(0f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f));
 
-            GameObject coinObject = Instantiate(CoinPrefab, transform.position + randomOffset, Quaternion.identity);
+            GameObject coinObject = Instantiate(CoinPrefab, new Vector3(transform.position.x,0,transform.position.z) + randomOffset, Quaternion.identity);
 
             Rigidbody rb = coinObject.GetComponent<Rigidbody>();
 
@@ -458,38 +379,6 @@ public class EnemyController : MonoBehaviour
                             break;
                     }
                 }
-            }
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (isAttacking)
-            {
-                StopAttack();
-            }
-        }
-    }
-
-    private IEnumerator AttackPlayer()
-    {
-        while (isAttacking)
-        {
-            PlayerController.Instance.TakeDamage(Attack, Color.white);
-            yield return new WaitForSeconds(attackInterval);
-        }
-    }
-
-    void StopAttack()
-    {
-        if (isAttacking)
-        {
-            isAttacking = false;
-            if (attackCoroutine != null)
-            {
-                StopCoroutine(attackCoroutine);
             }
         }
     }

@@ -15,9 +15,19 @@ public class LevelUpManager : MonoBehaviour
     public Image CenterImage;
     public Image RightImage;
 
-    public TextMeshProUGUI LeftText;
-    public TextMeshProUGUI CenterText;
-    public TextMeshProUGUI RightText;
+    public Image LeftBG;
+    public Image CenterBG;
+    public Image RightBG;
+
+    public TextMeshProUGUI LeftTitle;
+    public TextMeshProUGUI CenterTitle;
+    public TextMeshProUGUI RightTitle;
+    public TextMeshProUGUI LeftDescription;
+    public TextMeshProUGUI CenterDescription;
+    public TextMeshProUGUI RightDescription;
+    public TextMeshProUGUI LeftRarity;
+    public TextMeshProUGUI CenterRarity;
+    public TextMeshProUGUI RightRarity;
 
     Upgrade[] up;
 
@@ -82,21 +92,33 @@ public class LevelUpManager : MonoBehaviour
         }
         up = GenerateUpgrade();
 
-        LeftText.text = up[0].Rarity + " " + up[0].Name;
-        if (GetColor.ContainsKey(up[0].Rarity))
+        LeftTitle.text = up[0].Name;
+        LeftRarity.text = up[0].Rarity;
+        LeftDescription.text = up[0].Description;
+        LeftImage.sprite = up[0].Image;
+        if(GetColor.ContainsKey(up[0].Rarity))
         {
-            LeftImage.color = GetColor[up[0].Rarity]();
+            LeftBG.color = GetColor[up[0].Rarity]();
         }
-        CenterText.text = up[1].Rarity + " " + up[1].Name;
-        if (GetColor.ContainsKey(up[1].Rarity))
+
+        CenterTitle.text = up[1].Name;
+        CenterRarity.text = up[1].Rarity;
+        CenterDescription.text = up[1].Description;
+        CenterImage.sprite = up[1].Image;
+        if(GetColor.ContainsKey(up[1].Rarity))
         {
-            CenterImage.color = GetColor[up[1].Rarity]();
+            CenterBG.color = GetColor[up[1].Rarity]();
         }
-        RightText.text = up[2].Rarity + " " + up[2].Name;
-        if (GetColor.ContainsKey(up[2].Rarity))
+
+        RightTitle.text = up[2].Name;
+        RightRarity.text = up[2].Rarity;
+        RightDescription.text = up[2].Description;
+        RightImage.sprite = up[2].Image;
+        if(GetColor.ContainsKey(up[2].Rarity))
         {
-            RightImage.color = GetColor[up[2].Rarity]();
+            RightBG.color = GetColor[up[2].Rarity]();
         }
+        
     }
 
     public void ChooseUpgrade(int chosenValue)

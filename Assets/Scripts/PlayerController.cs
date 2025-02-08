@@ -124,6 +124,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
             EnemyController enemyController = currentTarget.GetComponent<EnemyController>();
             if (enemyController == null || enemyController.IsDead)
             {
+                Debug.Log("Target is dead");
                 currentTarget = null; 
                 return; 
             }
@@ -209,6 +210,24 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
     void Update()
     {
+         if (onCombat)
+        {
+            if (healingCoroutine != null)
+            {
+                StopCoroutine(healingCoroutine);
+                healingCoroutine = null;
+            }
+        }
+        else
+        {
+            if (healingCoroutine == null)
+            {
+                healingCoroutine = StartCoroutine(RegenerateHealth());
+            }
+        }
+
+
+
         HandleInput();
 
         if(isMoving && targetPosition != null)
@@ -299,7 +318,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         else if(Input.GetMouseButtonDown(1))
         {
             isAttacking = false;
-           if (EventSystem.current.IsPointerOverGameObject() || hudController.Instance.CurrentHUD.Count > 0)
+            if (EventSystem.current.IsPointerOverGameObject() || hudController.Instance.CurrentHUD.Count > 0)
             {
                 return;
             }
@@ -310,7 +329,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
             if(groundPlane.Raycast(ray,out distance))
             {
-                currentTarget = FindClosestEnemyNearPosition(ray.GetPoint(distance));
+                currentTarget = FindClosestEnemyNearPosition(ray.GetPoint(distance)).transform.GetChild(0).gameObject;
                 if(currentTarget)
                 {
                     isMoving = false;
